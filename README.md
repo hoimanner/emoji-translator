@@ -29,4 +29,4 @@ All you need is a modern web browser. No installations or external dependencies 
 2. Navigate to the project directory:
    cd emoji-translator
 
-3. Open 'index.html' in your favorite web browser.
+3. Open `index.html` in your favorite web browser.
