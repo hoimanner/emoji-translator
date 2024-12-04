@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Translator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #e0f7fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            transition: background-color 0.3s;
+        }
+
+        h1 {
+            color: #00796b;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #translator-container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        #translator-container:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            border: 2px solid #00796b;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 1rem;
+            background-color: #f1f8e9;
+            color: #333;
+            resize: none;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: #004d40;
+            outline: none;
+        }
+
+        button {
+            background-color: #00796b;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 1.3rem;
+            color: #ffffff;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #004d40;
+            transform: translateY(-2px);
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f8e9;
+            border: 2px solid #00796b;
+            border-radius: 8px;
+            min-height: 70px;
+            font-size: 1.2rem;
+            color: #333;
+            text-align: left;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        footer a {
+            color: #00796b;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Emoji Translator</h1>
+    <h3>Works best with Gen Alpha slang and short forms of words. Type your text in the input box.</h3>
+    
+    <div id="translator-container">
+        <textarea id="inputText">gigachad xd lmao imy wbu btw hbd</textarea>
+        <button id="translateButton">Translate to Emoji</button>
+        <div id="output">🗿 😆 😂 💔 🤷 🤓 🎂</div>
+    </div>
+    <footer>
+        Made with ❤️ by sarvesh.
+    </footer>
+    <script>
+        // Emoji Dictionary
+        const emojiDictionary = {
+            "gigachad": "🗿",
+            "meme": "😂",
+            "savage": "😎",
+            "lit": "🔥",
+            "vibe": "🎶",
+            "flex": "💪",
+            "goat": "🐐", // Greatest of All Time
+            "noob": "👶", // Newbie
+            "fomo": "😱", // Fear of Missing Out
+            "bop": "🎵",
+            "cheers": "🥂",
+            "spicy": "🌶️",
+            "xd": "😆",
+            "ok": "👌",
+            "sorry": "😔",
+            "thanks": "🙏",
+            "brb": "⏳",
+            "bday": "🎂",
+            "squad": "👥",
+            "cringe": "😬",
+            "yolo": "😜", // You Only Live Once
+            "vibe check": "✅",
+            "bet": "🤝",
+            "lmao": "😂",
+            "omg": "😲",
+            "wtf": "😳",
+            "idk": "🤷",
+            "tbh": "🤔",
+            "tmi": "🙊",
+            "btw": "🤓",
+            "imo": "🤗",
+            "irl": "👤",
+            "jk": "😜",
+            "nvm": "🙅",
+            "omw": "🚗",
+            "tbt": "⏪",
+            "ttyl": "📞",
+            "wbu": "🤷",
+            "wyd": "🤔",
+            "ily": "❤️",
+            "imy": "💔",
+            "idc": "🤷",
+            "hmu": "📲",
+            "hbd": "🎂",
+            "hbu": "🤷",
+            "hmu": "📲",
+            "hru": "🤷",
+            "hbd": "🎂",
+            "fast": "⚡",
+            "slow": "🐢",
+            "soon": "🔜",
+            "late": "🕒",
+            "early": "🕕",
+            "now": "⏰",
+            "later": "🕒",
+            "before": "⏳",
+            "after": "⌛",
+            "today": "📅",
+            "tomorrow": "📆",
+            "yesterday": "📅",
+            "morning": "🌅",
+            "night": "🌃",
+            "evening": "🌆",
+            "noon": "🕛",
+            "midnight": "🕛",
+            "weekend": "📅",
+            "weekday": "📅",
+            "holiday": "📅",
+            "vacation": "📅",
+            "summer": "🌞",
+            "winter": "❄️",
+            "spring": "🌸",
+            "fall": "🍂",
+            "autumn": "🍂",
+            "rain": "🌧️",
+            "snow": "❄️",
+            "storm": "🌩️",
+            "cloud": "☁️",
+            "sun": "☀️",
+            "moon": "🌙",
+            "star": "⭐",
+            "earth": "🌍",
+            "world": "🌍",
+            "globe": "🌍",
+            "map": "🗺️",
+            "beach": "🏖️",
+            "desert": "🏜️",
+            "island": "🏝️",
+            "mountain": "⛰️",
+            "hill": "⛰️",
+            "volcano": "🌋",
+            "river": "🏞️",
+            "lake": "🏞️",
+            "ocean": "🌊",
+            "sea": "🌊",
+            "fav": "❤️",
+            "farm": "🚜",
+            "city": "🏙️",
+            "town": "🏙️",
+            "village": "🏘️",
+            "home": "🏠",
+            "house": "🏠",
+            "building": "🏢",
+            "rock": "🪨",
+            "skull": "💀",
+            "sob": "😭",
+            "pray": "🙏",
+            "fire": "🔥",
+            "bomb": "💣",
+            "gun": "🔫",
+            "knife": "🔪",
+            "pill": "💊",
+            "mask": "😷",
+            "sick": "🤒",
+            "injury": "🤕",
+            "blood": "🩸",
+            "poop": "💩",
+            "alien": "👽",
+            "robot": "🤖",
+            "ghost": "👻",
+            "clown": "🤡",
+            "baby": "👶",
+            "child": "🧒",
+            "elder": "🧓"
+        };
+
+        // Translator Function
+        function translateToEmoji(input) {
+            const words = input.split(" ");
+            let translatedWords = words.map(word => emojiDictionary[word.toLowerCase()] || word);
+            return translatedWords.join(" ");
+        }
+
+        // DOM Elements
+        const inputText = document.getElementById("inputText");
+        const translateButton = document.getElementById("translateButton");
+        const outputDiv = document.getElementById("output");
+
+        // Event Listener for Button
+        translateButton.addEventListener("click", () => {
+            const userInput = inputText.value.trim();
+            const translatedText = translateToEmoji(userInput);
+            outputDiv.textContent = translatedText || "Please enter some text for translation!";
+        });
+    </script>
+</body>
+</html>
